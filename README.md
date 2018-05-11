@@ -2,7 +2,7 @@
 # OS MasterMap<sup>&reg;</sup> Highways Network Translator
 
 ### Introduction
-This translator has been developed to convert OS MasterMap Highways Network data from its native GML into PostGIS and/or GeoPackage using Open Source tools.
+This translator has been developed to convert OS MasterMap Highways Network data from its native GML into PostgreSQL/PostGIS and GeoPackage (GPKG) using Open Source tools.
 
 <br>
 
@@ -54,7 +54,7 @@ product,member,name,type,{length}
 <br>
 
 ### Processing
-The first stage (`process.sh`) transforms the GML files into CSV format. The output forms the basis for subsequent loading into PostgreSQL (using `ogr2ogr_CSV2PG.sh`) or GeoPackage (using `ogr2ogr_CSV2GPKG.sh`).
+The first stage (`process.sh`) transforms the GML files into CSV format. The output forms the basis for subsequent loading into PostgreSQL/PostGIS (using `ogr2ogr_CSV2PG.sh`) or GeoPackage (using `ogr2ogr_CSV2GPKG.sh`).
 
 Environment variables in the shell script should be edited accordingly...
 
