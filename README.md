@@ -2,7 +2,7 @@
 # OS MasterMap<sup>&reg;</sup> Highways Network Translator
 
 ### Introduction
-This translator has been developed to convert the OS MasterMap Highways Network data from the native GML into a variety of OGR supported output formats using Open Source tools.
+This translator has been developed to convert OS MasterMap Highways Network data from its native GML into a variety of OGR supported output formats using Open Source tools.
 
 <br>
 
