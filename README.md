@@ -12,7 +12,6 @@ This translator has been developed to convert OS MasterMap Highways Network data
 [Geospatial Data Abstraction Library (GDAL)] - Translator library released by the Open Source Geospatial Foundation for reading/writing raster and vector geospatial data formats<sup>&dagger;&dagger;</sup>.
 
 <sup>&dagger;</sup> Saxon 9.x requires Java 6 (also known as JDK 1.6) or later.
-
 <sup>&dagger;&dagger;</sup> Process assumes GDAL/OGR 2.1.x release.
 
 <br>
@@ -27,7 +26,6 @@ This translator has been developed to convert OS MasterMap Highways Network data
 |   +-- userDefinedFunctions.awk
 +-- _lib
 │   +-- schema.txt
-+-- _vrt
 +-- process.sh
 +-- ogr2ogr_CSV2GPKG.sh
 +-- ogr2ogr_CSV2PG.sh
