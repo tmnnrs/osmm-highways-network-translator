@@ -56,7 +56,7 @@ product,member,name,type,{length}
 ### Processing
 The first stage (`process.sh`) transforms the GML files into CSV format. The output forms the basis for subsequent loading into PostgreSQL (using `ogr2ogr_CSV2PG.sh`) or GeoPackage (using `ogr2ogr_CSV2GPKG.sh`).
 
-Environment variables in the shell script should be editted accordingly...
+Environment variables in the shell script should be edited accordingly...
 
 **`process.sh`**
 ```c
