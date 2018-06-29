@@ -1,4 +1,4 @@
-Roads,FerryLink,wkbMultiLineString
+Roads,FerryLink,wkbLineString
 Roads,FerryLink,id,String
 Roads,FerryLink,localId,String
 Roads,FerryLink,beginLifespanVersion,DateTime
@@ -45,7 +45,7 @@ Roads,Road,reasonForChange,String
 Roads,Road_link,wkbNone
 Roads,Road_link,id,String
 Roads,Road_link,link,String
-Roads,RoadLink,wkbMultiLineString
+Roads,RoadLink,wkbLineString
 Roads,RoadLink,id,String
 Roads,RoadLink,localId,String
 Roads,RoadLink,beginLifespanVersion,DateTime
@@ -208,7 +208,7 @@ RAM,Hazard_pointReference,applicableDirection,String
 RAM,Hazard_pointReference,atPosition,Real
 RAM,Hazard_pointReference,atPositionGeometryX,Real
 RAM,Hazard_pointReference,atPositionGeometryY,Real
-RAM,HighwayDedication,wkbMultiLineString
+RAM,HighwayDedication,wkbLineString
 RAM,HighwayDedication,id,String
 RAM,HighwayDedication,localId,String
 RAM,HighwayDedication,beginLifespanVersion,DateTime
@@ -416,7 +416,7 @@ RAM,TurnRestriction_vehicleQualifier,id,String
 RAM,TurnRestriction_vehicleQualifier,exceptFor,String
 RAM,TurnRestriction_vehicleQualifier,qualifier,String
 RAM,TurnRestriction_vehicleQualifier,qualifierType,String
-Paths,ConnectingLink,wkbMultiLineString
+Paths,ConnectingLink,wkbLineString
 Paths,ConnectingLink,id,String
 Paths,ConnectingLink,localId,String
 Paths,ConnectingLink,beginLifespanVersion,DateTime
@@ -442,7 +442,7 @@ Paths,Path,reasonForChange,String
 Paths,Path_link,wkbNone
 Paths,Path_link,id,String
 Paths,Path_link,link,String
-Paths,PathLink,wkbMultiLineString
+Paths,PathLink,wkbLineString
 Paths,PathLink,id,String
 Paths,PathLink,localId,String
 Paths,PathLink,beginLifespanVersion,DateTime
