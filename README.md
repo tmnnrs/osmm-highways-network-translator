@@ -4,8 +4,6 @@
 ### Introduction
 This translator has been developed to convert OS MasterMap Highways Network data from its native GML into PostgreSQL/PostGIS and GeoPackage (GPKG) using Open Source tools.
 
-<br>
-
 ### Requirements
 [SAXON] - XSLT processor developed by Saxonica Limited<sup>&dagger;</sup>.
 
@@ -13,8 +11,6 @@ This translator has been developed to convert OS MasterMap Highways Network data
 
 <sup>&dagger;</sup> Saxon 9.x requires Java 6 (also known as JDK 1.6) or later.
 <sup>&dagger;&dagger;</sup> Process assumes GDAL/OGR 2.1.x release.
-
-<br>
 
 ### Project Tree
 ```c
@@ -50,8 +46,6 @@ product,member,geometryType
 product,member,name,type,{length}
 ...
 ```
-
-<br>
 
 ### Processing
 The first stage (`process.sh`) transforms the GML files into CSV format. The output forms the basis for subsequent loading into PostgreSQL/PostGIS (using `ogr2ogr_CSV2PG.sh`) or GeoPackage (using `ogr2ogr_CSV2GPKG.sh`).
@@ -89,8 +83,6 @@ $ ./ogr2ogr_CSV2PG.sh
 ```
 
 The process takes ~3hrs to run on a 2.5 GHz Intel Core i7 MacBook Pro with 16 GB RAM.
-
-<br>
 
 ### Change Log
 **Version 1.0** (May 2018)
