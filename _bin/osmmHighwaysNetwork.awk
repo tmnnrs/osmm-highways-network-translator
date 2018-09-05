@@ -494,7 +494,6 @@
 			printf("id,pkey,namedTime,startTime,endTime\n") > (outdir "/AccessRestriction_timeInterval_dayPeriod_timePeriod.csv")
 		}
 
-		validFrom = highwaysStr[5]
 		pointReference = highwaysStr[6]
 		restriction = highwaysStr[7]
 		trafficSign = highwaysStr[8]
