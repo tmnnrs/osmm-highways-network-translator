@@ -106,7 +106,7 @@
 		<xsl:variable name="dedication_reasonForChange"><xsl:value-of select="*/dedication:reasonForChange"/></xsl:variable>
         <xsl:variable name="dedication_worksProhibited"><xsl:value-of select="*/dedication:worksProhibited"/></xsl:variable>
 
-		<xsl:variable name="highway_access"><xsl:value-of select="*/highway:access"/></xsl:variable>
+		<!-- <xsl:variable name="highway_access"><xsl:value-of select="*/highway:access"/></xsl:variable> -->
 		<xsl:variable name="highway_administrativeArea">
 			<xsl:for-each select="*/highway:administrativeArea">
 				<xsl:value-of select="normalize-space(.)"/>
@@ -401,7 +401,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="hwtn_reasonForChange"><xsl:value-of select="*/hwtn:reasonForChange"/></xsl:variable>
-		<xsl:variable name="hwtn_refToFunctionalSite"><xsl:value-of select="*/hwtn:refToFunctionalSite"/></xsl:variable>
+		<xsl:variable name="hwtn_refToFunctionalSite"><xsl:value-of select="substring-after(*/hwtn:refToFunctionalSite/@xlink:href,'#')"/></xsl:variable>
 		<xsl:variable name="hwtn_routeOperator"><xsl:value-of select="*/hwtn:routeOperator"/></xsl:variable>
 		<xsl:variable name="hwtn_vehicularFerry"><xsl:value-of select="*/hwtn:vehicularFerry"/></xsl:variable>
 
@@ -685,7 +685,7 @@
 				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
 				<xsl:value-of select="$tn-ro_formOfRoadNode"/><xsl:text>#</xsl:text>
 				<xsl:value-of select="$highway_classification"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_access"/><xsl:text>#</xsl:text>
+				<!-- <xsl:value-of select="$highway_access"/> --><xsl:text>#</xsl:text>
 				<xsl:value-of select="$highway_junctionName"/><xsl:text>#</xsl:text>
 				<xsl:value-of select="$highway_junctionNumber"/><xsl:text>#</xsl:text>
 				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>#</xsl:text>
