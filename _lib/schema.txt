@@ -266,8 +266,8 @@ RAM,Maintenance_networkReference,wkbNone
 RAM,Maintenance_networkReference,id,String
 RAM,Maintenance_networkReference,networkReference,String
 RAM,Maintenance_networkReference,locationDescription,String
-RAM,Maintenance_networkReference,locationStart,Real
-RAM,Maintenance_networkReference,locationEnd,Real
+RAM,Maintenance_networkReference,locationStart,String
+RAM,Maintenance_networkReference,locationEnd,String
 RAM,Reinstatement,wkbUnknown
 RAM,Reinstatement,id,String
 RAM,Reinstatement,localId,String
@@ -280,8 +280,8 @@ RAM,Reinstatement_networkReference,wkbNone
 RAM,Reinstatement_networkReference,id,String
 RAM,Reinstatement_networkReference,networkReference,String
 RAM,Reinstatement_networkReference,locationDescription,String
-RAM,Reinstatement_networkReference,locationStart,Real
-RAM,Reinstatement_networkReference,locationEnd,Real
+RAM,Reinstatement_networkReference,locationStart,String
+RAM,Reinstatement_networkReference,locationEnd,String
 RAM,RestrictionForVehicles,wkbPoint
 RAM,RestrictionForVehicles,id,String
 RAM,RestrictionForVehicles,localId,String
@@ -323,8 +323,8 @@ RAM,SpecialDesignation_networkReference,wkbNone
 RAM,SpecialDesignation_networkReference,id,String
 RAM,SpecialDesignation_networkReference,networkReference,String
 RAM,SpecialDesignation_networkReference,locationDescription,String
-RAM,SpecialDesignation_networkReference,locationStart,Real
-RAM,SpecialDesignation_networkReference,locationEnd,Real
+RAM,SpecialDesignation_networkReference,locationStart,String
+RAM,SpecialDesignation_networkReference,locationEnd,String
 RAM,SpecialDesignation_timeInterval_namedDate,wkbNone
 RAM,SpecialDesignation_timeInterval_namedDate,id,String
 RAM,SpecialDesignation_timeInterval_namedDate,pkey,Integer
