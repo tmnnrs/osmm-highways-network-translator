@@ -49,6 +49,26 @@
 
 	<xsl:output method="text" encoding="UTF-8"/>
 
+	<xsl:template name="replace-string">
+		<xsl:param name="text"/>
+		<xsl:param name="replace"/>
+		<xsl:param name="with"/>
+		<xsl:choose>
+			<xsl:when test="contains($text,$replace)">
+				<xsl:value-of select="substring-before($text,$replace)"/>
+				<xsl:value-of select="$with"/>
+				<xsl:call-template name="replace-string">
+					<xsl:with-param name="text" select="substring-after($text,$replace)"/>
+					<xsl:with-param name="replace" select="$replace"/>
+					<xsl:with-param name="with" select="$with"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$text"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template match="/">
 		<xsl:for-each select="os:FeatureCollection">
 			<xsl:apply-templates select=".">
@@ -98,13 +118,13 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="*/dedication:geometry/gml:LineString/gml:posList"/>
 		</xsl:variable>
-        <xsl:variable name="dedication_nationalCycleRoute"><xsl:value-of select="*/dedication:nationalCycleRoute"/></xsl:variable>
-        <xsl:variable name="dedication_obstruction"><xsl:value-of select="*/dedication:obstruction"/></xsl:variable>
-        <xsl:variable name="dedication_planningOrder"><xsl:value-of select="*/dedication:planningOrder"/></xsl:variable>
-        <xsl:variable name="dedication_publicRightOfWay"><xsl:value-of select="*/dedication:publicRightOfWay"/></xsl:variable>
-        <xsl:variable name="dedication_quietRoute"><xsl:value-of select="*/dedication:quietRoute"/></xsl:variable>
+		<xsl:variable name="dedication_nationalCycleRoute"><xsl:value-of select="*/dedication:nationalCycleRoute"/></xsl:variable>
+		<xsl:variable name="dedication_obstruction"><xsl:value-of select="*/dedication:obstruction"/></xsl:variable>
+		<xsl:variable name="dedication_planningOrder"><xsl:value-of select="*/dedication:planningOrder"/></xsl:variable>
+		<xsl:variable name="dedication_publicRightOfWay"><xsl:value-of select="*/dedication:publicRightOfWay"/></xsl:variable>
+		<xsl:variable name="dedication_quietRoute"><xsl:value-of select="*/dedication:quietRoute"/></xsl:variable>
 		<xsl:variable name="dedication_reasonForChange"><xsl:value-of select="*/dedication:reasonForChange"/></xsl:variable>
-        <xsl:variable name="dedication_worksProhibited"><xsl:value-of select="*/dedication:worksProhibited"/></xsl:variable>
+		<xsl:variable name="dedication_worksProhibited"><xsl:value-of select="*/dedication:worksProhibited"/></xsl:variable>
 
 		<!-- <xsl:variable name="highway_access"><xsl:value-of select="*/highway:access"/></xsl:variable> -->
 		<xsl:variable name="highway_administrativeArea">
@@ -448,7 +468,15 @@
 		<xsl:variable name="net_networkReferenceLocation">
 			<xsl:value-of select="substring-after(*/net:networkRef/ram:NetworkReferenceLocation/net:element/@xlink:href,'#')"/>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="*/net:networkRef/ram:NetworkReferenceLocation/ram:locationDescription"/>
+			<!-- <xsl:value-of select="*/net:networkRef/ram:NetworkReferenceLocation/ram:locationDescription"/> -->
+			<xsl:variable name="ram_locationDescription">
+				<xsl:call-template name="replace-string">
+					<xsl:with-param name="text" select="*/net:networkRef/ram:NetworkReferenceLocation/ram:locationDescription"/>
+					<xsl:with-param name="replace" select="'&#09;'"/>
+					<xsl:with-param name="with" select="' '"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:value-of select="$ram_locationDescription"/>
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="*/net:networkRef/ram:NetworkReferenceLocation/ram:locationStart/gml:Point/gml:pos"/>
 			<xsl:text>|</xsl:text>
@@ -637,410 +665,410 @@
 
 		<xsl:choose>
 			<xsl:when test="($RoadLink_id != '')">
-				<xsl:text>featureMember_RoadLink#</xsl:text>
-				<xsl:value-of select="$RoadLink_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_fictitious"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadClassification"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_routeHierarchy"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_formOfWay"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_trunkRoad"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_primaryRoute"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadClassificationNumber"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_alternateName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_operationalState"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_provenance"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_directionality"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_length"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_matchStatus"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_alternateIdentifier"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_startNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_startGradeSeparation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_endNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_endGradeSeparation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadStructure"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_cycleFacility"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadWidth_averageWidth"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadWidth_minimumWidth"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadWidth_confidenceLevel"/><xsl:text>#</xsl:text>
-				<!-- <xsl:value-of select="$highway_numberOfLanes"/> --><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_elevationGain_inDirection"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_elevationGain_inOppositeDirection"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_formsPartOf"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_RoadLink&#09;</xsl:text>
+				<xsl:value-of select="$RoadLink_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_fictitious"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadClassification"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_routeHierarchy"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_formOfWay"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_trunkRoad"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_primaryRoute"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadClassificationNumber"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_alternateName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_operationalState"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_provenance"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_directionality"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_length"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_matchStatus"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_alternateIdentifier"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_startNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_startGradeSeparation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_endNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_endGradeSeparation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadStructure"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_cycleFacility"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadWidth_averageWidth"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadWidth_minimumWidth"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadWidth_confidenceLevel"/><xsl:text>&#09;</xsl:text>
+				<!-- <xsl:value-of select="$highway_numberOfLanes"/> --><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_elevationGain_inDirection"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_elevationGain_inOppositeDirection"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_formsPartOf"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$net_centrelineGeometry"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($RoadNode_id != '')">
-				<xsl:text>featureMember_RoadNode#</xsl:text>
-				<xsl:value-of select="$RoadNode_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-ro_formOfRoadNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_classification"/><xsl:text>#</xsl:text>
-				<!-- <xsl:value-of select="$highway_access"/> --><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_junctionName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_junctionNumber"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_RoadNode&#09;</xsl:text>
+				<xsl:value-of select="$RoadNode_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-ro_formOfRoadNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_classification"/><xsl:text>&#09;</xsl:text>
+				<!-- <xsl:value-of select="$highway_access"/> --><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_junctionName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_junctionNumber"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$net_geometryPoint"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Road_id != '')">
-				<xsl:text>featureMember_Road#</xsl:text>
-				<xsl:value-of select="$Road_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-ro_localRoadCode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-ro_nationalRoadCode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadClassification"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_designatedName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_localName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_descriptor"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_link"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Road&#09;</xsl:text>
+				<xsl:value-of select="$Road_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-ro_localRoadCode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-ro_nationalRoadCode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadClassification"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_designatedName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_localName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_descriptor"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_link"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$highway_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Street_id != '')">
-				<xsl:text>featureMember_Street#</xsl:text>
-				<xsl:value-of select="$Street_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-ro_localRoadCode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-ro_nationalRoadCode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_designatedName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_localName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_descriptor"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadClassification"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_streetType"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_operationalStateType"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_locality"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_town"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_administrativeArea"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_responsibleAuthority"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_geometryProvenance"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_gssCode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_link"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Street&#09;</xsl:text>
+				<xsl:value-of select="$Street_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-ro_localRoadCode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-ro_nationalRoadCode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_designatedName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_localName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_descriptor"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadClassification"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_streetType"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_operationalStateType"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_locality"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_town"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_administrativeArea"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_responsibleAuthority"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_geometryProvenance"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_gssCode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_link"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$highway_geometryMultiCurve"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($RoadJunction_id != '')">
-				<xsl:text>featureMember_RoadJunction#</xsl:text>
-				<xsl:value-of select="$RoadJunction_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_junctionType"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_junctionName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadClassificationNumber"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_junctionNumber"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_node"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_RoadJunction&#09;</xsl:text>
+				<xsl:value-of select="$RoadJunction_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_junctionType"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_junctionName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadClassificationNumber"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_junctionNumber"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_node"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$highway_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($PathLink_id != '')">
-				<xsl:text>featureMember_PathLink#</xsl:text>
-				<xsl:value-of select="$PathLink_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_fictitious"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_formOfWay"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_pathName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_alternateName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_provenance"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_surfaceType"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_cycleFacility"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_matchStatus"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_length"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_alternateIdentifier"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_startNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_startGradeSeparation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_endNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_endGradeSeparation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_elevationGain_inDirection"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_elevationGain_inOppositeDirection"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_formsPartOf"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_PathLink&#09;</xsl:text>
+				<xsl:value-of select="$PathLink_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_fictitious"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_formOfWay"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_pathName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_alternateName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_provenance"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_surfaceType"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_cycleFacility"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_matchStatus"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_length"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_alternateIdentifier"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_startNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_startGradeSeparation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_endNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_endGradeSeparation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_elevationGain_inDirection"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_elevationGain_inOppositeDirection"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_formsPartOf"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_relatedRoadArea"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$net_centrelineGeometry"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($PathNode_id != '')">
-				<xsl:text>featureMember_PathNode#</xsl:text>
-				<xsl:value-of select="$PathNode_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-ro_formOfRoadNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_classification"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_PathNode&#09;</xsl:text>
+				<xsl:value-of select="$PathNode_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-ro_formOfRoadNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_classification"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$net_geometryPoint"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($ConnectingLink_id != '')">
-				<xsl:text>featureMember_ConnectingLink#</xsl:text>
-				<xsl:value-of select="$ConnectingLink_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_fictitious"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_connectingNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_pathNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_ConnectingLink&#09;</xsl:text>
+				<xsl:value-of select="$ConnectingLink_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_fictitious"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_connectingNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_pathNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$highway_geometryLineString"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($ConnectingNode_id != '')">
-				<xsl:text>featureMember_ConnectingNode#</xsl:text>
-				<xsl:value-of select="$ConnectingNode_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_roadLink"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_ConnectingNode&#09;</xsl:text>
+				<xsl:value-of select="$ConnectingNode_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_roadLink"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$highway_geometryPoint"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Path_id != '')">
-				<xsl:text>featureMember_Path#</xsl:text>
-				<xsl:value-of select="$Path_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_pathName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_link"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Path&#09;</xsl:text>
+				<xsl:value-of select="$Path_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_pathName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_link"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$highway_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($FerryLink_id != '')">
-				<xsl:text>featureMember_FerryLink#</xsl:text>
-				<xsl:value-of select="$FerryLink_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_fictitious"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_vehicularFerry"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_routeOperator"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_startNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_endNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_FerryLink&#09;</xsl:text>
+				<xsl:value-of select="$FerryLink_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_fictitious"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_vehicularFerry"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_routeOperator"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_startNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_endNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$net_centrelineGeometry"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($FerryNode_id != '')">
-				<xsl:text>featureMember_FerryNode#</xsl:text>
-				<xsl:value-of select="$FerryNode_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn-w_formOfWaterwayNode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_FerryNode&#09;</xsl:text>
+				<xsl:value-of select="$FerryNode_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn-w_formOfWaterwayNode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$net_geometryPoint"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($FerryTerminal_id != '')">
-				<xsl:text>featureMember_FerryTerminal#</xsl:text>
-				<xsl:value-of select="$FerryTerminal_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_type"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_ferryTerminalName"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_ferryTerminalCode"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$hwtn_refToFunctionalSite"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_element"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_FerryTerminal&#09;</xsl:text>
+				<xsl:value-of select="$FerryTerminal_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_type"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_ferryTerminalName"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_ferryTerminalCode"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$hwtn_refToFunctionalSite"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_element"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$hwtn_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($AccessRestriction_id != '')">
-				<xsl:text>featureMember_AccessRestriction#</xsl:text>
-				<xsl:value-of select="$AccessRestriction_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_pointReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_restriction"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_trafficSign"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_inclusion_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_use"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_load"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_exemption_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_exemption_vehicleQualifier_use"/><xsl:value-of select="$ram_exemption_vehicleQualifier_load"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_timeInterval"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_AccessRestriction&#09;</xsl:text>
+				<xsl:value-of select="$AccessRestriction_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_pointReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_restriction"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_trafficSign"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_inclusion_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_use"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_load"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_exemption_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_exemption_vehicleQualifier_use"/><xsl:value-of select="$ram_exemption_vehicleQualifier_load"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_timeInterval"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($HighwayDedication_id != '')">
-				<xsl:text>featureMember_HighwayDedication#</xsl:text>
-				<xsl:value-of select="$HighwayDedication_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_dedication"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_timeInterval"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_publicRightOfWay"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_nationalCycleRoute"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_quietRoute"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_obstruction"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_planningOrder"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_worksProhibited"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$dedication_reasonForChange"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_HighwayDedication&#09;</xsl:text>
+				<xsl:value-of select="$HighwayDedication_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_dedication"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_timeInterval"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_publicRightOfWay"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_nationalCycleRoute"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_quietRoute"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_obstruction"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_planningOrder"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_worksProhibited"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$dedication_reasonForChange"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$dedication_geometry"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($TurnRestriction_id != '')">
-				<xsl:text>featureMember_TurnRestriction#</xsl:text>
-				<xsl:value-of select="$TurnRestriction_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_linkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_restriction"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_inclusion_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_use"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_load"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_exemption_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_exemption_vehicleQualifier_use"/><xsl:value-of select="$ram_exemption_vehicleQualifier_load"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_timeInterval"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_TurnRestriction&#09;</xsl:text>
+				<xsl:value-of select="$TurnRestriction_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_linkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_restriction"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_inclusion_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_use"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_load"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_exemption_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_exemption_vehicleQualifier_use"/><xsl:value-of select="$ram_exemption_vehicleQualifier_load"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_timeInterval"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($RestrictionForVehicles_id != '')">
-				<xsl:text>featureMember_RestrictionForVehicles#</xsl:text>
-				<xsl:value-of select="$RestrictionForVehicles_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_pointReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_nodeReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_measure"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_restrictionType"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_sourceOfMeasure"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_measure2"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_inclusion_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_use"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_load"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_exemption_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_exemption_vehicleQualifier_use"/><xsl:value-of select="$ram_exemption_vehicleQualifier_load"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_structure"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_trafficSign"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_trafficRegulationOrder"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_RestrictionForVehicles&#09;</xsl:text>
+				<xsl:value-of select="$RestrictionForVehicles_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_pointReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_nodeReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_measure"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_restrictionType"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_sourceOfMeasure"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_measure2"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_inclusion_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_use"/><xsl:value-of select="$ram_inclusion_vehicleQualifier_load"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_exemption_vehicleQualifier_vehicle"/><xsl:value-of select="$ram_exemption_vehicleQualifier_use"/><xsl:value-of select="$ram_exemption_vehicleQualifier_load"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_structure"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_trafficSign"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_trafficRegulationOrder"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Hazard_id != '')">
-				<xsl:text>featureMember_Hazard#</xsl:text>
-				<xsl:value-of select="$Hazard_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_pointReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_linkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_nodeReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_hazard"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_description"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Hazard&#09;</xsl:text>
+				<xsl:value-of select="$Hazard_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_pointReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_linkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_nodeReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_hazard"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_description"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Structure_id != '')">
-				<xsl:text>featureMember_Structure#</xsl:text>
-				<xsl:value-of select="$Structure_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_pointReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_linkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_nodeReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_structure"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_description"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Structure&#09;</xsl:text>
+				<xsl:value-of select="$Structure_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_pointReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_linkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_nodeReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_structure"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_description"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Maintenance_id != '')">
-				<xsl:text>featureMember_Maintenance#</xsl:text>
-				<xsl:value-of select="$Maintenance_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReferenceLocation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_maintenanceResponsibility"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_maintenanceAuthority"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_partialReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_highwayAuthority"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Maintenance&#09;</xsl:text>
+				<xsl:value-of select="$Maintenance_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReferenceLocation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_maintenanceResponsibility"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_maintenanceAuthority"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_partialReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_highwayAuthority"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($Reinstatement_id != '')">
-				<xsl:text>featureMember_Reinstatement#</xsl:text>
-				<xsl:value-of select="$Reinstatement_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReferenceLocation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_reinstatementType"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_partialReference"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_Reinstatement&#09;</xsl:text>
+				<xsl:value-of select="$Reinstatement_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReferenceLocation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_reinstatementType"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_partialReference"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="($SpecialDesignation_id != '')">
-				<xsl:text>featureMember_SpecialDesignation#</xsl:text>
-				<xsl:value-of select="$SpecialDesignation_id"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_localId"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validFrom"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$tn_validTo"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReference"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$net_networkReferenceLocation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_designation"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_description"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_timeInterval"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$highway_contactAuthority"/><xsl:text>#</xsl:text>
-				<xsl:value-of select="$ram_partialReference"/><xsl:text>#</xsl:text>
+				<xsl:text>featureMember_SpecialDesignation&#09;</xsl:text>
+				<xsl:value-of select="$SpecialDesignation_id"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_localId"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_beginLifespanVersion"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validFrom"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$tn_validTo"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReference"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$net_networkReferenceLocation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_designation"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_description"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_timeInterval"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$highway_contactAuthority"/><xsl:text>&#09;</xsl:text>
+				<xsl:value-of select="$ram_partialReference"/><xsl:text>&#09;</xsl:text>
 				<xsl:value-of select="$ram_reasonForChange"/>
 				<xsl:text>&#10;</xsl:text>
 			</xsl:when>
