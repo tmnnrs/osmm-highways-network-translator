@@ -1,7 +1,7 @@
 # COMMAND LINE awk -v outdir=<output_directory> -f userDefinedFunctions.awk -f osmmHighwaysNetwork.awk [input]
 
 {
-	i = split($0,highwaysStr,"#")
+	i = split($0,highwaysStr,"\t")
 
 	featureMember = highwaysStr[1]
 	id = highwaysStr[2]
