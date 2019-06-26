@@ -8,7 +8,7 @@ This translator has been developed to convert OS MasterMap Highways Network data
 
 [Geospatial Data Abstraction Library (GDAL)] - Translator library released by the Open Source Geospatial Foundation for reading/writing raster and vector geospatial data formats<sup>&dagger;&dagger;</sup>.
 
-<sup>&dagger;</sup> Saxon 9.x requires Java 6 (also known as JDK 1.6) or later.
+<sup>&dagger;</sup> Saxon 9.x requires Java 6 (also known as JDK 1.6) or later.\
 <sup>&dagger;&dagger;</sup> Process assumes GDAL/OGR 2.1.x release.
 
 ### Project Tree
@@ -84,9 +84,26 @@ $ ./ogr2ogr_CSV2PG.sh
 The process takes ~3hrs to run on a 2.5 GHz Intel Core i7 MacBook Pro with 16 GB RAM.
 
 ### Change Log
-**Version 1.0** (May 2018)
+**Version 1.0.0** (May 2018)
 
 * Initial release.
+
+**Version 1.1.0** (June 2018)
+
+* `[schema.txt]` Changed linear geometry types from wkbMultiLineString to wkbLineString (except Street).
+
+**Version 1.1.1** (September 2018)
+
+* Minor bug fix.
+
+**Version 1.2.0** (May 2019)
+
+* `[osmmHighwaysNetwork.xsl]` Fixes issue with refToFunctionalSite attribute being empty for FerryTerminal features.
+
+**Version 1.3.0** (June 2019)
+
+* `[osmmHighwaysNetwork.xsl]` Changed output delimiter to TAB (\t) for improved stability.
+* `[schema.txt]` Changed field type for networkReference locationStart + locationEnd.
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
