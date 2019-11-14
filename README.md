@@ -105,6 +105,10 @@ The process takes ~3hrs to run on a 2.5 GHz Intel Core i7 MacBook Pro with 16 GB
 * `[osmmHighwaysNetwork.xsl]` Changed output delimiter to TAB (\t) for improved stability.
 * `[schema.txt]` Changed field type for networkReference locationStart + locationEnd.
 
+**Version 1.3.1** (November 2019)
+
+* `[ogr2ogr_CSV2PG.sh]` Minor bug fix in *_timeInterval_dayPeriod_namedPeriod index creation.
+
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
