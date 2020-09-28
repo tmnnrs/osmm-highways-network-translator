@@ -109,6 +109,10 @@ The process takes ~3hrs to run on a 2.5 GHz Intel Core i7 MacBook Pro with 16 GB
 
 * `[ogr2ogr_CSV2PG.sh]` Minor bug fix in *_timeInterval_dayPeriod_namedPeriod index creation.
 
+**Version 1.4.0** (September 2020)
+
+* `[ogr2ogr_CSV2PG.sh]` Update default PG schema name (for consistency with [highways-network-pgrouting](https://github.com/tmnnrs/highways-network-pgrouting)).
+
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
