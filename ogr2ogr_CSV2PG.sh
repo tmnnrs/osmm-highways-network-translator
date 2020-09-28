@@ -14,14 +14,14 @@ gdalPGDump() {
   # $6 - uniqueindex
   if [ "$2" != "null" ]; then
     IFS='|' read -r -a geom <<< "$2"
-    # $GDAL_DIR/ogr2ogr -f "PostgreSQL" -lco SCHEMA=osmmhighways -dim 3 -nlt "${geom[0]}" PG:"host=localhost dbname=osdata" $DATA_DIR/"$1".vrt
-    $GDAL_DIR/ogr2ogr --config PG_USE_COPY YES -f "PGDump" /vsistdout/ $DATA_DIR/"$1".vrt -nlt "${geom[0]}" -dim 3 -lco SCHEMA=osmmhighways -lco SRID="${geom[1]}" | $PSQL_DIR/psql --quiet -d osdata -f -
+    # $GDAL_DIR/ogr2ogr -overwrite -f "PostgreSQL" PG:"host=localhost dbname=osdata" $DATA_DIR/"$1".vrt -nlt "${geom[0]}" -lco DIM=3 -lco GEOMETRY_NAME=geom -lco SCHEMA=osmm_highways
+    $GDAL_DIR/ogr2ogr --config PG_USE_COPY YES -f "PGDump" /vsistdout/ $DATA_DIR/"$1".vrt -nlt "${geom[0]}" -lco DIM=3 -lco GEOMETRY_NAME=geom -lco SCHEMA=osmm_highways -lco SRID="${geom[1]}" | $PSQL_DIR/psql --quiet -d osdata -f -
   else
-    # $GDAL_DIR/ogr2ogr -f "PostgreSQL" -lco SCHEMA=osmmhighways PG:"host=localhost dbname=osdata" $DATA_DIR/"$1".vrt
-    $GDAL_DIR/ogr2ogr --config PG_USE_COPY YES -f "PGDump" /vsistdout/ $DATA_DIR/"$1".vrt -lco SCHEMA=osmmhighways | $PSQL_DIR/psql --quiet -d osdata -f -
+    # $GDAL_DIR/ogr2ogr -overwrite -f "PostgreSQL" PG:"host=localhost dbname=osdata" $DATA_DIR/"$1".vrt -lco SCHEMA=osmm_highways
+    $GDAL_DIR/ogr2ogr --config PG_USE_COPY YES -f "PGDump" /vsistdout/ $DATA_DIR/"$1".vrt -lco SCHEMA=osmm_highways | $PSQL_DIR/psql --quiet -d osdata -f -
   fi
-  $PSQL_DIR/psql --quiet -d osdata -c "CREATE $6 $3 ON osmmhighways.$4 ($5)"
-  $PSQL_DIR/psql --quiet -d osdata -c "VACUUM ANALYZE osmmhighways.$4"
+  $PSQL_DIR/psql --quiet -d osdata -c "CREATE $6 $3 ON osmm_highways.$4 ($5)"
+  $PSQL_DIR/psql --quiet -d osdata -c "VACUUM ANALYZE osmm_highways.$4"
 }
 
 # RoadLink
